@@ -212,8 +212,8 @@ export function detectHallucination(
   const contextText = context.join(" ").toLowerCase();
 
   // Extract key claims from response
-  const claims = responseLower.match(/\d+\s*(years?|months?|days?|percent|%|\$)/g) || [];
-  const contextClaims = contextText.match(/\d+\s*(years?|months?|days?|percent|%|\$)/g) || [];
+  const claims: string[] = responseLower.match(/\d+\s*(years?|months?|days?|percent|%|\$)/g) || [];
+  const contextClaims: string[] = contextText.match(/\d+\s*(years?|months?|days?|percent|%|\$)/g) || [];
 
   // If response has many numeric claims not in context, might be hallucination
   const uniqueClaims = claims.filter((c) => !contextClaims.includes(c));
