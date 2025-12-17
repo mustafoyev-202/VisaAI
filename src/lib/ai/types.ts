@@ -63,6 +63,12 @@ export interface RAGContext {
   filters?: Record<string, any>;
 }
 
+export interface RAGSearchOptions {
+  topK?: number;
+  minScore?: number;
+  filters?: Record<string, any>;
+}
+
 export interface RAGResult {
   content: string;
   score: number;

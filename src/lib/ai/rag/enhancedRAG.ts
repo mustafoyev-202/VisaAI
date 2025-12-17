@@ -1,7 +1,7 @@
 // Enhanced RAG Implementation
 
 import { InMemoryVectorStore, type VectorStore } from "./vectorStore";
-import type { RAGContext, RAGResult } from "../types";
+import type { RAGSearchOptions, RAGResult } from "../types";
 import { retrieveRelevantRules } from "@/lib/rag";
 import type { VisaProfile } from "@/lib/rag";
 
@@ -17,7 +17,7 @@ export class EnhancedRAG {
   async retrieve(
     query: string,
     profile: VisaProfile,
-    options?: RAGContext,
+    options?: RAGSearchOptions,
   ): Promise<RAGResult[]> {
     // Check cache first
     const cacheKey = this.getCacheKey(query, profile);

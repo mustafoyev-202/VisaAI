@@ -1,11 +1,11 @@
 // Vector Store Abstraction for RAG
 
-import type { RAGContext, RAGResult } from "../types";
+import type { RAGSearchOptions, RAGResult } from "../types";
 
 export interface VectorStore {
   name: string;
   addDocuments(documents: Array<{ id: string; content: string; metadata?: Record<string, any> }>): Promise<void>;
-  search(query: string, options?: RAGContext): Promise<RAGResult[]>;
+  search(query: string, options?: RAGSearchOptions): Promise<RAGResult[]>;
   deleteDocuments(ids: string[]): Promise<void>;
   isAvailable(): Promise<boolean>;
 }
@@ -68,7 +68,7 @@ export class InMemoryVectorStore implements VectorStore {
     }
   }
 
-  async search(query: string, options?: RAGContext): Promise<RAGResult[]> {
+  async search(query: string, options?: RAGSearchOptions): Promise<RAGResult[]> {
     const queryEmbedding = await this.embed(query);
     const topK = options?.topK || 5;
     const minScore = options?.minScore || 0.5;
@@ -145,7 +145,7 @@ export class PineconeVectorStore implements VectorStore {
     // Implement Pinecone upsert
   }
 
-  async search(query: string, options?: RAGContext): Promise<RAGResult[]> {
+  async search(query: string, options?: RAGSearchOptions): Promise<RAGResult[]> {
     // Implement Pinecone query
   }
 
