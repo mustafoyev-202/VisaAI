@@ -1,4 +1,4 @@
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { withMiddleware, createSuccessResponse, createErrorResponse } from "@/lib/api/middleware";
 import type { RequestContext } from "@/lib/api/types";
 import { createStorageProvider } from "@/lib/documents/storage";
@@ -57,7 +57,7 @@ export async function GET(request: NextRequest) {
         }
 
         // Return file with appropriate headers
-        return new Response(fileBuffer, {
+        return new NextResponse(new Uint8Array(fileBuffer), {
           headers: {
             "Content-Type": "application/octet-stream",
             "Content-Disposition": `attachment; filename="${key}"`,
