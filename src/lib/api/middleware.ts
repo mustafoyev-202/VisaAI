@@ -29,7 +29,7 @@ export async function withMiddleware<T>(
 
   // Handle CORS preflight
   if (request.method === "OPTIONS" && options.enableCORS) {
-    return addCORSHeaders(response, request.headers.get("origin") || undefined);
+    return addCORSHeaders(response, request.headers.get("origin") || undefined) as NextResponse<T>;
   }
 
   // Rate limiting
