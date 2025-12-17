@@ -6,7 +6,7 @@ import type { RequestContext, BatchRequest, BatchResponse } from "@/lib/api/type
 // Example batch schema - adjust based on your needs
 const batchItemSchema = z.object({
   id: z.string().optional(),
-  data: z.record(z.any()),
+  data: z.record(z.string(), z.any()),
 });
 
 const batchRequestSchema = z.object({
