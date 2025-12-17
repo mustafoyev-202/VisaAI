@@ -1,9 +1,12 @@
 // API Middleware Functions
 
 import { NextRequest, NextResponse } from "next/server";
-import { createRequestContext, createErrorResponse, addRateLimitHeaders, addCacheHeaders, addCompressionHeaders, addCORSHeaders } from "./response";
+import { createRequestContext, createErrorResponse, createSuccessResponse, addRateLimitHeaders, addCacheHeaders, addCompressionHeaders, addCORSHeaders } from "./response";
 import { checkRateLimit, type RateLimitTier } from "./rateLimit";
 import type { RequestContext } from "./types";
+
+// Re-export response helpers for convenience
+export { createSuccessResponse, createErrorResponse };
 
 export interface MiddlewareOptions {
   rateLimitTier?: RateLimitTier;

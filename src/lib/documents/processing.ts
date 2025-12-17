@@ -175,18 +175,6 @@ export class DocumentProcessor {
   }
 }
 
-// Thumbnail and preview generation
-export async function generateThumbnail(fileBuffer: Buffer): Promise<Buffer> {
-  // In production, use sharp or similar library
-  // For MVP, return a small version of the buffer
-  return fileBuffer.slice(0, Math.min(10000, fileBuffer.length));
-}
-
-export async function generatePreview(fileBuffer: Buffer): Promise<Buffer> {
-  // Generate preview (lower resolution version)
-  return fileBuffer.slice(0, Math.min(50000, fileBuffer.length));
-}
-
 // Watermarking
 export async function addWatermark(
   fileBuffer: Buffer,
