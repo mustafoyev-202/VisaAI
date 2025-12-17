@@ -158,8 +158,6 @@ export async function findOrCreateOAuthUser(
     emailVerified: userInfo.emailVerified || false,
     mfaEnabled: false,
     phoneVerified: false,
-    createdAt: new Date(),
-    updatedAt: new Date(),
     role: "user",
     consentGiven: false,
   });

@@ -3,9 +3,59 @@
 import crypto from "crypto";
 import type { MFAToken } from "./types";
 
+// Base32 encoding/decoding (RFC 4648)
+const BASE32_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+
+function encodeBase32(buffer: Buffer): string {
+  let bits = 0;
+  let value = 0;
+  let output = "";
+
+  for (let i = 0; i < buffer.length; i++) {
+    value = (value << 8) | buffer[i];
+    bits += 8;
+
+    while (bits >= 5) {
+      output += BASE32_ALPHABET[(value >>> (bits - 5)) & 31];
+      bits -= 5;
+    }
+  }
+
+  if (bits > 0) {
+    output += BASE32_ALPHABET[(value << (5 - bits)) & 31];
+  }
+
+  return output;
+}
+
+function decodeBase32(input: string): Buffer {
+  const normalized = input.toUpperCase().replace(/=+$/, "");
+  let bits = 0;
+  let value = 0;
+  const bytes: number[] = [];
+
+  for (let i = 0; i < normalized.length; i++) {
+    const char = normalized[i];
+    const index = BASE32_ALPHABET.indexOf(char);
+    if (index === -1) {
+      throw new Error(`Invalid base32 character: ${char}`);
+    }
+
+    value = (value << 5) | index;
+    bits += 5;
+
+    if (bits >= 8) {
+      bytes.push((value >>> (bits - 8)) & 255);
+      bits -= 8;
+    }
+  }
+
+  return Buffer.from(bytes);
+}
+
 // TOTP implementation (RFC 6238)
 export function generateTOTPSecret(): string {
-  return crypto.randomBytes(20).toString("base32");
+  return encodeBase32(crypto.randomBytes(20));
 }
 
 export function generateTOTP(secret: string, timeStep: number = 30): string {
@@ -13,7 +63,7 @@ export function generateTOTP(secret: string, timeStep: number = 30): string {
   const timeBuffer = Buffer.alloc(8);
   timeBuffer.writeUInt32BE(time, 4);
 
-  const key = Buffer.from(secret, "base32");
+  const key = decodeBase32(secret);
   const hmac = crypto.createHmac("sha1", key).update(timeBuffer).digest();
 
   const offset = hmac[hmac.length - 1] & 0x0f;
