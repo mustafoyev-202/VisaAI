@@ -5,7 +5,7 @@ import { documentProcessor } from "@/lib/documents/processing";
 import { createStorageProvider } from "@/lib/documents/storage";
 
 export async function GET(request: NextRequest) {
-  return withMiddleware(
+  return withMiddleware<unknown>(
     request,
     async (req: NextRequest, context: RequestContext) => {
       try {
