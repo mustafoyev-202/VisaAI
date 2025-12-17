@@ -96,7 +96,6 @@ export async function POST(request: NextRequest) {
             fileSize: file.size,
             status: "pending",
             storageTier: "hot",
-            storageLocation: key,
             uploadedAt: new Date(),
           },
         );
